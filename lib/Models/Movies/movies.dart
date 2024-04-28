@@ -13,9 +13,13 @@ class Movies {
       required this.totalResults});
 
   factory Movies.fromJson(Map<String, dynamic> json) {
+    List<dynamic> resultsJson = json['results'];
+    List<Movie> results =
+        resultsJson.map((result) => Movie.fromJson(result)).toList();
+
     return Movies(
         page: json["page"],
-        results: json["results"],
+        results: results,
         totalPages: json["total_pages"],
         totalResults: json["total_results"]);
   }

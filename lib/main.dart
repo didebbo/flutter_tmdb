@@ -5,7 +5,7 @@ import 'Providers/http_provider.dart';
 
 void main() async {
   await dotenv.load();
-  ResponseProvider().logHttpProvider();
+  DataProvider().printDiscoverMovie();
   runApp(const MyApp());
 }
 
