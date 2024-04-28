@@ -17,14 +17,7 @@ class DiscoverMovieModel {
   }
 
   fetchMovie() async {
-    movies = Future(() async {
-      try {
-        final data = await DataProvider().getDiscoverMovie();
-        return Result(result: data);
-      } catch (e) {
-        return Result(error: ErrorDescription(e.toString()));
-      }
-    });
+    movies = DataProvider().getDiscoverMovie();
   }
 }
 
@@ -52,17 +45,21 @@ class _DiscoverMovie extends State<DiscoverMovie> {
     return FutureBuilder(
       future: widget.viewModel.movies,
       builder: (context, snapShot) {
+        Logger().d("snapShot.connectionState: ${snapShot.connectionState}");
+        Logger().d("snapShot.hasError: ${snapShot.hasError}");
+        Logger().d("snapShot.hasData: ${snapShot.hasData}");
+        Logger().d("data.hasError: ${snapShot.data?.hasError ?? true}");
+        Logger().d("data.errorDescription: ${snapShot.data?.error}");
+        Logger().d("data.results: ${snapShot.data?.result?.results}");
         if (snapShot.connectionState == ConnectionState.done) {
-          if (snapShot.hasData) {
-            final result = snapShot.data;
-            if (result?.hasError ?? true) {
-              return errorMessage(
-                  result?.error?.toDescription() ?? "An error occurred");
-            }
-            return listView(snapShot.data?.result?.results ?? []);
-          }
           if (snapShot.hasError) {
             return errorMessage(snapShot.error.toString());
+          } else if (snapShot.hasData) {
+            final result = snapShot.data;
+            if (result?.hasError ?? true) {
+              return errorMessage(result?.error ?? "Undefined Error!");
+            }
+            return listView(snapShot.data?.result?.results ?? []);
           }
         }
         return loader();

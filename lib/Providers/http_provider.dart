@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
@@ -6,9 +5,9 @@ class Result<T> {
   Result({this.result, this.error});
 
   final T? result;
-  final ErrorDescription? error;
+  final String? error;
 
-  late bool hasError = error != null;
+  late bool hasError = result == null;
 }
 
 class HttpProvider {
@@ -34,15 +33,20 @@ class HttpProvider {
     return stringQueryParams;
   }
 
-  Future<http.Response> callService(
+  Future<Result<http.Response>> callService(
       {String? host,
       String path = '',
       Map<String, String> queryParams = const {},
       int delay = 2,
       int timeOut = 30}) async {
-    return Future.delayed(
-        Duration(seconds: delay),
-        () => http.get(Uri.parse(_fullPath(host, path, queryParams)),
-            headers: _header));
+    try {
+      final result = await Future.delayed(
+          Duration(seconds: delay),
+          () => http.get(Uri.parse(_fullPath(host, path, queryParams)),
+              headers: _header));
+      return Result(result: result);
+    } catch (e) {
+      return Result(error: e.toString());
+    }
   }
 }
