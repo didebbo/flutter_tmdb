@@ -1,19 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
+import 'package:the_movie_db/Models/Movies/index.dart';
+import 'package:the_movie_db/Providers/data_provider.dart';
 import 'package:the_movie_db/Providers/http_provider.dart';
 
-import '../../Models/Movies/movies.dart';
-import '../../Models/Movies/movie.dart';
-
 class DiscoverMovieModel {
+  final logger = Logger();
+
   String title = "Discover Movie";
-  late Future<Movies> movies;
+  late Future<Result<Movies>> movies;
+
+//  late Movies movies;
 
   DiscoverMovieModel() {
     fetchMovie();
   }
 
   fetchMovie() async {
-    movies = DataProvider().getDiscoverMovie();
+    movies = Future(() async {
+      try {
+        final data = await DataProvider().getDiscoverMovie();
+        return Result(result: data);
+      } catch (e) {
+        return Result(error: ErrorDescription(e.toString()));
+      }
+    });
   }
 }
 
@@ -43,7 +54,15 @@ class _DiscoverMovie extends State<DiscoverMovie> {
       builder: (context, snapShot) {
         if (snapShot.connectionState == ConnectionState.done) {
           if (snapShot.hasData) {
-            return listView(snapShot.data?.results ?? []);
+            final result = snapShot.data;
+            if (result?.hasError ?? true) {
+              return errorMessage(
+                  result?.error?.toDescription() ?? "An error occurred");
+            }
+            return listView(snapShot.data?.result?.results ?? []);
+          }
+          if (snapShot.hasError) {
+            return errorMessage(snapShot.error.toString());
           }
         }
         return loader();
@@ -57,6 +76,12 @@ class _DiscoverMovie extends State<DiscoverMovie> {
     );
   }
 
+  Widget errorMessage(String text) {
+    return Center(
+      child: Text(text),
+    );
+  }
+
   Widget listView(List<Movie> movies) {
     return ListView(
       children: items(movies),
@@ -65,8 +90,8 @@ class _DiscoverMovie extends State<DiscoverMovie> {
 
   List<Widget> items(List<Movie> movies) {
     return movies
-        .map((e) => ListTile(
-              title: Text(e.title),
+        .map((m) => ListTile(
+              title: Text(m.title),
             ))
         .toList();
   }
