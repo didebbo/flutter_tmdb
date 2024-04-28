@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:the_movie_db/Widgets/Pages/movie_list.dart';
+import 'Providers/http_provider.dart';
 
 void main() async {
   await dotenv.load();
+  ResponseProvider().logHttpProvider();
   runApp(const MyApp());
 }
 
