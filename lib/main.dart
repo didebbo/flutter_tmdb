@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:logger/logger.dart';
+import 'package:the_movie_db/Widgets/Pages/movie_list.dart';
 
 void main() async {
   await dotenv.load();
@@ -14,11 +14,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text("AppBar"),
-        ),
-      ),
+      home: MovieList(),
     );
   }
 }
