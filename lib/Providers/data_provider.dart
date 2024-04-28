@@ -11,8 +11,7 @@ class DataProvider {
 
   Future<Movies> getDiscoverMovie() async {
     try {
-      final response = await httpProvider.callService(
-          host: 'https://google.com/', path: 'discover/movie');
+      final response = await httpProvider.callService(path: 'discover/movie');
       if (response.statusCode == 200) {
         final Map<String, dynamic> json = jsonDecode(response.body);
         final movies = Movies.fromJson(json);

@@ -39,7 +39,7 @@ class HttpProvider {
       String path = '',
       Map<String, String> queryParams = const {},
       int delay = 2,
-      int timeOut = 10}) async {
+      int timeOut = 30}) async {
     return Future.delayed(
         Duration(seconds: delay),
         () => http.get(Uri.parse(_fullPath(host, path, queryParams)),

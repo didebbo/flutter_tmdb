@@ -77,8 +77,14 @@ class _DiscoverMovie extends State<DiscoverMovie> {
   }
 
   Widget errorMessage(String text) {
-    return Center(
-      child: Text(text),
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+      child: Center(
+        child: Text(
+          text,
+          textAlign: TextAlign.center,
+        ),
+      ),
     );
   }
 
