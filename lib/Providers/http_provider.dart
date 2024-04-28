@@ -33,21 +33,25 @@ class HttpProvider {
 
   Future<http.Response> callService(
           {String path = '',
-          Map<String, String> queryParams = const {}}) async =>
-      http.get(Uri.parse(fullPath(path, queryParams)), headers: _header);
+          Map<String, String> queryParams = const {},
+          int delay = 2}) async =>
+      Future.delayed(
+          Duration(seconds: delay),
+          () => http.get(Uri.parse(fullPath(path, queryParams)),
+              headers: _header));
 }
 
 class DataProvider {
   final logger = Logger();
   final httpProvider = HttpProvider();
 
-  Future<Movies?> getDiscoverMovie() async {
+  Future<Movies> getDiscoverMovie() async {
     final response = await httpProvider.callService(path: 'discover/movie');
     if (response.statusCode == 200) {
       final Map<String, dynamic> json = jsonDecode(response.body);
       final movies = Movies.fromJson(json);
       return movies;
     }
-    return null;
+    throw Exception('Errore durante la richiesta: ${response.statusCode}');
   }
 }

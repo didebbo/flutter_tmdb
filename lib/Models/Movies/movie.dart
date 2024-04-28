@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 class Movie {
   int id;
   String title;
