@@ -1,11 +1,9 @@
 import 'dart:convert';
-import 'package:logger/logger.dart';
 import 'package:the_movie_db/Providers/http_provider.dart';
 
 import 'package:the_movie_db/Models/index.dart';
 
 class DataProvider {
-  final logger = Logger();
   final httpProvider = HttpProvider();
 
   Future<Result<Movies>> getDiscoverMovie() async {

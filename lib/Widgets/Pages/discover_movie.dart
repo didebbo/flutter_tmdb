@@ -1,25 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:logger/logger.dart';
 import 'package:the_movie_db/Models/Movies/index.dart';
-import 'package:the_movie_db/Providers/data_provider.dart';
-import 'package:the_movie_db/Providers/http_provider.dart';
-
-class DiscoverMovieModel {
-  final logger = Logger();
-
-  String title = "Discover Movie";
-  late Future<Result<Movies>> movies;
-
-//  late Movies movies;
-
-  DiscoverMovieModel() {
-    fetchMovie();
-  }
-
-  fetchMovie() async {
-    movies = DataProvider().getDiscoverMovie();
-  }
-}
+import 'package:the_movie_db/Widgets/Pages/discover_movie_view_model.dart';
 
 class DiscoverMovie extends StatefulWidget {
   DiscoverMovie({super.key});
@@ -45,12 +26,6 @@ class _DiscoverMovie extends State<DiscoverMovie> {
     return FutureBuilder(
       future: widget.viewModel.movies,
       builder: (context, snapShot) {
-        Logger().d("snapShot.connectionState: ${snapShot.connectionState}");
-        Logger().d("snapShot.hasError: ${snapShot.hasError}");
-        Logger().d("snapShot.hasData: ${snapShot.hasData}");
-        Logger().d("data.hasError: ${snapShot.data?.hasError ?? true}");
-        Logger().d("data.errorDescription: ${snapShot.data?.error}");
-        Logger().d("data.results: ${snapShot.data?.result?.results}");
         if (snapShot.connectionState == ConnectionState.done) {
           if (snapShot.hasError) {
             return errorMessage(snapShot.error.toString());
