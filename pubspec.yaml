@@ -39,6 +39,7 @@ dependencies:
   flutter_dotenv: ^5.1.0
   sqflite: ^2.3.3
   http: ^1.2.1
+  provider: ^6.1.2
 
 dev_dependencies:
   flutter_test:

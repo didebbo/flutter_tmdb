@@ -12,12 +12,12 @@ class DataProvider {
       if (result.hasError) {
         return Result(
             error: result.error ?? "getDiscoverMovie has an undefined error");
-      } else if (result.result?.statusCode == 200) {
-        final Map<String, dynamic> json = jsonDecode(result.result?.body ?? "");
+      } else if (result.data?.statusCode == 200) {
+        final Map<String, dynamic> json = jsonDecode(result.data?.body ?? "");
         final movies = Movies.fromJson(json);
-        return Result(result: movies);
+        return Result(data: movies);
       } else {
-        final response = result.result;
+        final response = result.data;
         return Result(
             error: "${response?.statusCode} ${response?.reasonPhrase}");
       }

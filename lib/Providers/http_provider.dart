@@ -2,12 +2,12 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
 class Result<T> {
-  Result({this.result, this.error});
+  Result({this.data, this.error});
 
-  final T? result;
+  final T? data;
   final String? error;
 
-  late bool hasError = result == null;
+  late bool hasError = data == null;
 }
 
 class HttpProvider {
@@ -44,7 +44,7 @@ class HttpProvider {
           Duration(seconds: delay),
           () => http.get(Uri.parse(_fullPath(host, path, queryParams)),
               headers: _header));
-      return Result(result: result);
+      return Result(data: result);
     } catch (e) {
       return Result(error: e.toString());
     }

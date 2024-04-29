@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
 import 'package:the_movie_db/Models/Movies/index.dart';
 import 'package:the_movie_db/Widgets/Pages/discover_movie_view_model.dart';
 
@@ -18,27 +20,24 @@ class _DiscoverMovie extends State<DiscoverMovie> {
       appBar: AppBar(
         title: const Text('Discover Movie'),
       ),
-      body: futureBody(),
+      body: changeNotifierViewModel(),
     );
   }
 
-  Widget futureBody() {
-    return FutureBuilder(
-      future: widget.viewModel.movies,
-      builder: (context, snapShot) {
-        if (snapShot.connectionState == ConnectionState.done) {
-          if (snapShot.hasError) {
-            return errorMessage(snapShot.error.toString());
-          } else if (snapShot.hasData) {
-            final result = snapShot.data;
-            if (result?.hasError ?? true) {
-              return errorMessage(result?.error ?? "Undefined Error!");
-            }
-            return listView(snapShot.data?.result?.results ?? []);
+  Widget changeNotifierViewModel() {
+    return ChangeNotifierProvider(
+      create: (_) => DiscoverMovieModel(),
+      child: Consumer<DiscoverMovieModel>(
+        builder: (context, viewModel, child) {
+          if (viewModel.isLoading) {
+            return loader();
+          } else if (viewModel.movies.hasError) {
+            return errorMessage(viewModel.movies.error ?? "Undefined Error");
+          } else {
+            return listView(viewModel.movies.data?.results ?? []);
           }
-        }
-        return loader();
-      },
+        },
+      ),
     );
   }
 
