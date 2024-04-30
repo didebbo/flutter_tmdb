@@ -86,11 +86,13 @@ class _DiscoverMovie extends State<DiscoverMovie> {
 
         return Column(children: [
           Container(
-            color: Colors.grey,
-            width: screenWidth,
-            height: screenHeight,
-            child: Image.network(item.posterFullPath),
-          ),
+              color: Colors.grey,
+              width: screenWidth,
+              height: screenHeight,
+              child: Image.network(
+                item.posterFullPath,
+                fit: BoxFit.cover,
+              )),
           Align(
             alignment: Alignment.centerLeft,
             child: Container(
