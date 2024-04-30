@@ -89,14 +89,22 @@ class _DiscoverMovie extends State<DiscoverMovie> {
             color: Colors.grey,
             width: screenWidth,
             height: screenHeight,
+            child: Image.network(item.posterFullPath),
           ),
           Align(
             alignment: Alignment.centerLeft,
-            child: Text(item.title,
-                style: const TextStyle(backgroundColor: Colors.red)),
+            child: Container(
+              padding: const EdgeInsets.all(10),
+              child: Text("${item.id}: ${item.title}",
+                  style: const TextStyle(backgroundColor: Colors.red)),
+            ),
           ),
         ]);
       },
     );
+  }
+
+  Widget posterImage(Movie item) {
+    return Image.network(item.posterFullPath);
   }
 }
