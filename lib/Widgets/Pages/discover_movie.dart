@@ -66,10 +66,22 @@ class _DiscoverMovie extends State<DiscoverMovie> {
   }
 
   List<Widget> items(List<Movie> movies) {
-    return movies
-        .map((m) => ListTile(
-              title: Text(m.title),
-            ))
-        .toList();
+    return movies.map((m) => itemCard(m)).toList();
+  }
+
+  Widget itemCard(Movie item) {
+    const double aspectRatio = 0.6;
+
+    final screenWidth = MediaQuery.of(context).size.width / 1.1;
+    final screenHeight = screenWidth * aspectRatio;
+
+    return Column(children: [
+      Container(
+        width: screenWidth,
+        height: screenHeight,
+        color: Colors.grey,
+      ),
+      Text(item.title),
+    ]);
   }
 }

@@ -10,8 +10,6 @@ class DiscoverMovieModel extends ChangeNotifier {
   bool _isLoading = false;
   bool get isLoading => _isLoading;
 
-//  late Movies movies;
-
   DiscoverMovieModel() {
     fetchMovie();
   }
