@@ -60,9 +60,17 @@ class _DiscoverMovie extends State<DiscoverMovie> {
   }
 
   Widget listView(List<Movie> movies) {
-    return ListView(
-      children: items(movies),
-    );
+    final screenWidth = MediaQuery.of(context).size.width / 1.1;
+
+    return Align(
+        alignment: Alignment.center,
+        child: Container(
+          width: screenWidth,
+          color: Colors.amber,
+          child: ListView(
+            children: items(movies),
+          ),
+        ));
   }
 
   List<Widget> items(List<Movie> movies) {
@@ -70,18 +78,25 @@ class _DiscoverMovie extends State<DiscoverMovie> {
   }
 
   Widget itemCard(Movie item) {
-    const double aspectRatio = 0.6;
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        const double aspectRatio = 0.6;
+        final screenWidth = constraints.maxWidth;
+        final screenHeight = screenWidth * aspectRatio;
 
-    final screenWidth = MediaQuery.of(context).size.width / 1.1;
-    final screenHeight = screenWidth * aspectRatio;
-
-    return Column(children: [
-      Container(
-        width: screenWidth,
-        height: screenHeight,
-        color: Colors.grey,
-      ),
-      Text(item.title),
-    ]);
+        return Column(children: [
+          Container(
+            color: Colors.grey,
+            width: screenWidth,
+            height: screenHeight,
+          ),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Text(item.title,
+                style: const TextStyle(backgroundColor: Colors.red)),
+          ),
+        ]);
+      },
+    );
   }
 }
